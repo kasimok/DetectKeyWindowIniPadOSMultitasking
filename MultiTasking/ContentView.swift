@@ -1,24 +1,17 @@
-//
-//  ContentView.swift
-//  MultiTasking
-//
-//  Created by 0x67 on 2025-08-30.
-//
-
 import SwiftUI
 
+// MARK: - Public API
 struct ContentView: View {
+    @Environment(\.isPrimaryScene) private var isPrimary
+    @Environment(\.scenePhase) private var scenePhase
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("ScenePhase: \(scenePhase == .active ? "Active" : "Inactive")")
+            Text("Primary: \(isPrimary ? "Yes" : "No")")
         }
         .padding()
+        .injectPrimaryScene()
     }
 }
 
-#Preview {
-    ContentView()
-}
