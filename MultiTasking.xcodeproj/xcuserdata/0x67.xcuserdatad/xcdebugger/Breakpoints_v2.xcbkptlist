@@ -78,8 +78,8 @@
             filePath = "MultiTasking/IsPrimarySceneKey.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
             landmarkName = "makeUIView(context:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,25 +94,9 @@
             filePath = "MultiTasking/IsPrimarySceneKey.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
             landmarkName = "didMoveToWindow()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1459598C-746F-4505-B0F0-FCCF6B1EA321"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MultiTasking/IsPrimarySceneKey.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "body(content:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
