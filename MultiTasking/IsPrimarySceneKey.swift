@@ -7,7 +7,7 @@
 import SwiftUI
 
 private struct IsPrimarySceneKey: EnvironmentKey {
-    static let defaultValue: Bool = false
+    static let defaultValue: Bool = true
 }
 extension EnvironmentValues {
     var isPrimaryScene: Bool {
@@ -18,26 +18,29 @@ extension EnvironmentValues {
 
 struct PrimarySceneObserver: ViewModifier {
     @State private var isPrimary = false
-    @State private var mySceneID: String?
+    @State private var myWindow: UIWindow?
     
     func body(content: Content) -> some View {
         content
             .environment(\.isPrimaryScene, isPrimary)
             .background(
-                WindowIDCapture(onSceneID: { id in
-                    mySceneID = id
+                WindowCapture(onWindow: { window in
+                    debugPrint("Window(Scene) created: \(window)")
+                    myWindow = window
                 })
             )
             .onAppear {
                 NotificationCenter.default.addObserver(
-                    forName: .primarySceneChanged,
+                    forName: .primaryWindowChanged,
                     object: nil,
                     queue: .main
                 ) { note in
-                    guard let announcedID = note.userInfo?["sceneID"] as? String else { return }
-                    isPrimary = (announcedID == mySceneID)
-                    debugPrint("isPrimary: \(isPrimary), announcedID: \(announcedID), mySceneID: \(mySceneID ?? "nil")")
+                    guard let announcedWindow = note.userInfo?["window"] as? UIWindow else { return }
+                    isPrimary = (announcedWindow == myWindow)
                 }
+            }
+            .onChange(of: isPrimary) { _,newValue in
+                debugPrint("window: \(ObjectIdentifier(myWindow!)), Primary: \(newValue)")
             }
     }
 }
@@ -48,17 +51,28 @@ extension View {
     }
 }
 
-// Helper to grab sceneID once view is attached
-private struct WindowIDCapture: UIViewRepresentable {
-    var onSceneID: (String) -> Void
-    func makeUIView(context: Context) -> UIView {
-        let v = UIView()
-        DispatchQueue.main.async {
-            if let id = v.window?.windowScene?.session.persistentIdentifier {
-                onSceneID(id)
-            }
-        }
-        return v
+// Helper to grab window directly when the view is added to hierarchy
+private struct WindowCapture: UIViewRepresentable {
+    var onWindow: (UIWindow) -> Void
+    
+    func makeUIView(context: Context) -> WindowCaptureView {
+        let view = WindowCaptureView()
+        view.onWindow = onWindow
+        return view
     }
-    func updateUIView(_ uiView: UIView, context: Context) {}
+    
+    func updateUIView(_ uiView: WindowCaptureView, context: Context) {}
+}
+
+private class WindowCaptureView: UIView {
+    // This closure is called upon new created view is added to the window,
+    // so that we can get the window
+    var onWindow: ((UIWindow) -> Void)?
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if let window = self.window {
+            onWindow?(window)
+        }
+    }
 }

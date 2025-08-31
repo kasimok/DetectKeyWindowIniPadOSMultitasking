@@ -36,9 +36,8 @@ extension UIApplication {
         self.swizzled_sendEvent(event)
         
         // Our custom event handling
-        if let window = event.allTouches?.first?.window,
-           let scene = window.windowScene {
-            PrimarySceneElector.shared.sceneDidReceiveEvent(scene)
+        if let window = event.allTouches?.first?.window{
+            PrimaryWindowElector.shared.sceneDidReceiveEvent(window)
         }
     }
 }
